@@ -1,3 +1,4 @@
+# vigenerecrypt.py
 import asventicrypt as crpt
 
 
@@ -23,6 +24,12 @@ class VigenereCrypt(object):
 
         return vigetab
 
+    def crypt(self, text, key, mode):
+        if mode == "encrypt":
+            return self.encrypt(text, key)
+        else:
+            print('en cours')
+
     def encrypt(self, text, key):
         """
         Encryption de du texte entré en paramètre avec la clé
@@ -30,19 +37,19 @@ class VigenereCrypt(object):
         """
 
         text = crpt.process_text(text)
-        key_adapted = self.__get_key_adapted(key, len(text))
+        key_adapted = self.__get_key_adapted(key, len(text), text)
         crypttext = []
 
         for key, letter in zip(key_adapted, text):
-            key_index = self.vigetab[0].index(key)
             if letter in self.vigetab[0]:
+                key_index = self.vigetab[0].index(key)
                 letter_index = self.vigetab[0].index(letter)
                 letter = self.vigetab[key_index][letter_index]
 
             crypttext.append(letter)
         return "".join(crypttext)
 
-    def __get_key_adapted(self, key, length):
+    def __get_key_adapted(self, key, length, text):
 
         key = key.upper()
         key_length = len(key)
@@ -50,10 +57,12 @@ class VigenereCrypt(object):
         key_adapted = []
 
         for i in range(0, length):
-            key_adapted.append(key[key_index])
-            key_index += 1
-            if key_index > key_length - 1:
-                key_index = 0
-
+            if text[i] in self.vigetab[0]:
+                key_adapted.append(key[key_index])
+                key_index += 1
+                if key_index > key_length - 1:
+                    key_index = 0
+            else:
+                key_adapted.append(" ")
         return "".join(key_adapted)
 
