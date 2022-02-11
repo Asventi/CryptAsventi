@@ -1,3 +1,6 @@
+import unicodedata
+
+
 """
 Petite bibliothèque d'utilitaires pour mon projet
 
@@ -11,6 +14,13 @@ def decale(tab, offset):
     else:
         tab_decale = tab[offset:26] + tab[:offset] + tab[(offset+26):] + tab[26:(offset+26)]
     return tab_decale
+
+
+def process_text(plaintext):
+    # Transforme le texte en un texte sans accents (Un tutoriel à été utilisé pour réaliser cette fonction)
+    text = ''.join(ch for ch in unicodedata.normalize('NFKD', plaintext)
+                   if not unicodedata.combining(ch))
+    return text
 
 
 def chrtab():

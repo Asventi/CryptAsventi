@@ -24,6 +24,7 @@ class RotCrypt(object):
 
     def crypt(self, text):
         crypttext = []
+        text = crpt.process_text(text)
 
         for letter in text:
             if letter in self.rot_dic:
@@ -32,3 +33,5 @@ class RotCrypt(object):
                 crypttext.append(letter)
 
         return "".join(crypttext)
+
+

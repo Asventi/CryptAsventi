@@ -16,9 +16,10 @@ parser.add_argument("text", help="Text")
 args = parser.parse_args()
 
 rot = rotcrypt.RotCrypt(13)
+vig = vigenerecrypt.VigenereCrypt()
 
-vigenere = vigenerecrypt.VigenereCrypt()
-vigenere.test()
+
+print(vig.encrypt("Parfait mon programme marche", "TESTDECLE"))
 
 
 
