@@ -1,3 +1,5 @@
+import asventicrypt as crpt
+
 
 # noinspection PyMethodMayBeStatic
 class RotCrypt(object):
@@ -11,9 +13,9 @@ class RotCrypt(object):
         self.rot_dic = self.__create_dictionnary(offset)
 
     def __create_dictionnary(self, offset):
-        ascii_tab = [chr(x) for x in range(65, 91)] + [chr(x) for x in range(97, 123)]
+        ascii_tab = crpt.chrtab()
+        ascii_tab_rot = crpt.decale(ascii_tab, offset)
 
-        ascii_tab_rot = ascii_tab[offset:26] + ascii_tab[:offset] + ascii_tab[(offset+26):] + ascii_tab[26:(offset+26)]
         rot_dic = {}
 
         for a, r in zip(ascii_tab, ascii_tab_rot):

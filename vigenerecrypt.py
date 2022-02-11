@@ -1,3 +1,6 @@
+import asventicrypt as crpt
+
+
 # noinspection PyMethodMayBeStatic
 class VigenereCrypt(object):
     """
@@ -6,23 +9,19 @@ class VigenereCrypt(object):
     By Asventi
     """
 
+    # Constructeur
     def __init__(self):
         self.vigetab = self.__create_vigetab()
 
+    # Création du tableau vigenere pour gérer plus facile le cryptage et le décryptage
     def __create_vigetab(self):
-        vigetab = []
+        vigetab = [crpt.chrtab()]  # Création de la première ligne du tableau grâce à ma bibliothèque
 
-        for i in range(0,26):
-            offset = 0
-            line = []
-
-            for k in range(0,26):
-                line.append(chr(i + 65 + offset))
-                offset += 1
-
-            vigetab.append(line)
+        for i in range(1,26):
+            line = crpt.decale(vigetab[0], i)  # Utilisation de ma bibliothèque pour décaler les lignes
+            vigetab.append(line)  # Ajout des lignes au tableau
 
         return vigetab
 
     def test(self):
-        print(self.vigetab)
+        print("hey")
