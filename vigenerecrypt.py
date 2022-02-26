@@ -2,21 +2,21 @@
 import asventicrypt as crpt
 
 
-# noinspection PyMethodMayBeStatic
 class VigenereCrypt(object):
     """
-    C'est une classe qui sert à crypter et décrypter en VigenereCryp
-
-    By Asventi
+    Crypt l'entrée en vigenere
     """
 
     # Constructeur
     def __init__(self):
         self.vigetab = self.__create_vigetab()
 
-    # Création du tableau vigenere pour gérer plus facile le cryptage et le décryptage
     def __create_vigetab(self):
-        vigetab = [crpt.chrtab()]  # Création de la première ligne du tableau grâce à ma bibliothèque
+        """
+        Créer un tableau utilisé pour crypter et décrypter en vigenere
+        :return: list
+        """
+        vigetab = [crpt.chrtab()]
 
         for i in range(1,26):
             line = crpt.decale(vigetab[0], i)  # Utilisation de ma bibliothèque pour décaler les lignes
@@ -25,15 +25,24 @@ class VigenereCrypt(object):
         return vigetab
 
     def crypt(self, text, key, mode):
-        if mode == "encrypt":
-            return self.encrypt(text, key)
-        else:
-            print('en cours')
-
-    def encrypt(self, text, key):
         """
-        Encryption de du texte entré en paramètre avec la clé
-        La clé devant être en majuscule
+        Appel la bonne méthode en fonction du mode choisit dans l'applicaiton
+        :param text: string
+        :param key: string
+        :param mode: string
+        :return: string
+        """
+        if mode == "encrypt":
+            return self.__encrypt(text, key)
+        else:
+            return self.__decrypt(text, key)
+
+    def __encrypt(self, text, key):
+        """
+        Encrypte le text entré en fonction de la clé entrée, la clé doit être sans espaces ni accents
+        :param text: string
+        :param key: string
+        :return: string
         """
 
         text = crpt.process_text(text)
@@ -45,12 +54,35 @@ class VigenereCrypt(object):
                 key_index = self.vigetab[0].index(key)
                 letter_index = self.vigetab[0].index(letter)
                 letter = self.vigetab[key_index][letter_index]
+            crypttext.append(letter)
 
+        return "".join(crypttext)
+
+    def __decrypt(self, text, key):
+        """
+        Decrypte le texte entré en fonction de la clé, la clé ne doit pas avoir d'espaces ni d'accents
+        :param text: string
+        :param key: string
+        :return: string
+        """
+        key_adapted = self.__get_key_adapted(key, len(text), text)
+        crypttext = []
+
+        for key, letter in zip(key_adapted, text):
+            if letter in self.vigetab[0]:
+                key_index = self.vigetab[0].index(key)
+                letter = self.vigetab[0][self.vigetab[key_index].index(letter)]
             crypttext.append(letter)
         return "".join(crypttext)
 
     def __get_key_adapted(self, key, length, text):
-
+        """
+        Transforme la clé entrée en une clé adapté au cryptage du texte entré
+        :param key: string
+        :param length: int
+        :param text: string
+        :return: string
+        """
         key = key.upper()
         key_length = len(key)
         key_index = 0
