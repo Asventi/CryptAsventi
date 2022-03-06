@@ -1,8 +1,5 @@
-# asventicrypt.py
+# crypt_utils.py
 import unicodedata
-
-
-# Petite bibliothèque d'utilitaires pour mon projet
 
 
 def decale(tab, offset):

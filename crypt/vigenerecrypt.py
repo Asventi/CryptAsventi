@@ -1,46 +1,40 @@
 # vigenerecrypt.py
-import asventicrypt as crpt
+from ..utils import crypt_utils as crpt
 
 
 class VigenereCrypt(object):
-    """
-    Crypt l'entrée en vigenere
-    """
 
-    # Constructeur
     def __init__(self):
         self.vigetab = self.__create_vigetab()
 
-    def __create_vigetab(self):
+    @staticmethod
+    def __create_vigetab():
         """
-        Créer un tableau utilisé pour crypter et décrypter en vigenere
-        :return: list
+        :return: talbeau de cyptage en vigenere
         """
         vigetab = [crpt.chrtab()]
 
         for i in range(1,26):
-            line = crpt.decale(vigetab[0], i)  # Utilisation de ma bibliothèque pour décaler les lignes
-            vigetab.append(line)  # Ajout des lignes au tableau
+            line = crpt.decale(vigetab[0], i)
+            vigetab.append(line)
 
         return vigetab
 
-    def crypt(self, text, key, mode):
+    def crypt(self, text: str, key: str, mode: str):
         """
-        Appel la bonne méthode en fonction du mode choisit dans l'applicaiton
-        :param text: string
-        :param key: string
-        :param mode: string
-        :return: string
+        :param text: texte à crypter/decrypter
+        :param key: clé de decryptage
+        :param mode: mode, decrypt ou crypt
+        :return: le text crypté/décrypté
         """
         if mode == "encrypt":
             return self.__encrypt(text, key)
         else:
             return self.__decrypt(text, key)
 
-    def __encrypt(self, text, key):
+    def __encrypt(self, text: str, key: str):
         """
-        Encrypte le text entré en fonction de la clé entrée, la clé doit être sans espaces ni accents
-        :param text: string
+        :param text: le texte a crypter
         :param key: string
         :return: string
         """
@@ -60,7 +54,6 @@ class VigenereCrypt(object):
 
     def __decrypt(self, text, key):
         """
-        Decrypte le texte entré en fonction de la clé, la clé ne doit pas avoir d'espaces ni d'accents
         :param text: string
         :param key: string
         :return: string
@@ -75,14 +68,16 @@ class VigenereCrypt(object):
             crypttext.append(letter)
         return "".join(crypttext)
 
-    def __get_key_adapted(self, key, length, text):
+    def __get_key_adapted(self, key: str, length: int, text: str):
         """
         Transforme la clé entrée en une clé adapté au cryptage du texte entré
-        :param key: string
-        :param length: int
-        :param text: string
+
+        :param key: la clé de cryptage/decryptage
+        :param length: taille du texte a crypter/decrypter
+        :param text: le texte a crypter/decrypter
         :return: string
         """
+        key = crpt.process_text(key)
         key = key.upper()
         key_length = len(key)
         key_index = 0
@@ -97,4 +92,3 @@ class VigenereCrypt(object):
             else:
                 key_adapted.append(" ")
         return "".join(key_adapted)
-

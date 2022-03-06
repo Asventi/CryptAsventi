@@ -1,18 +1,16 @@
 # rotcrypt.py
-import asventicrypt as crpt
+from ..utils import crypt_utils as crpt
 
 
-# noinspection PyMethodMayBeStatic
 class RotCrypt(object):
     """
     Crypte l'entrée en ROT, sert au ROT13 et au Code Caesar
     """
 
-    def __create_dictionnary(self, offset):
+    def __create_dictionnary(self, offset: int):
         """
-        Sert à créer un dictionnaire pour crypter et décrypter en fonction du décalage
-        :param offset: int
-        :return: dictionnary
+        :param offset: décalage de l'alphabet
+        :return: retourne un dictionnaire pour crypter et décrypter
         """
         ascii_tab = crpt.chrtab()
         ascii_tab_rot = crpt.decale(ascii_tab, offset)
@@ -23,12 +21,11 @@ class RotCrypt(object):
             rot_dic[a] = r
         return rot_dic
 
-    def crypt(self, text, offset):
+    def crypt(self, text: str, offset: int):
         """
-        Crypte en ROT le texte entré, le chiffre de ROT étant offset
-        :param text: string
-        :param offset: int
-        :return: string
+        :param text: le texte a crypter/décrypter
+        :param offset: decalage de l'alphabet
+        :return: le texte crypté/décrypté
         """
         rot_dic = self.__create_dictionnary(offset)
         crypttext = []

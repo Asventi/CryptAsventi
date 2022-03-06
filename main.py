@@ -1,18 +1,14 @@
 # main.py
-
 import pygubu
 
-import polybecrypt
-import rotcrypt
-import vigenerecrypt
+import crypt
 
 
-# Classe qui sert à la création de l'interface graphique (aide de la documentation de pygububuilder)
 class CryptAsventiApp(object):
     def __init__(self, master=None):
-        self.rot = rotcrypt.RotCrypt()
-        self.vigenere = vigenerecrypt.VigenereCrypt()
-        self.polybe = polybecrypt.PolybCrypt()
+        self.rot = crypt.RotCrypt()
+        self.vigenere = crypt.VigenereCrypt()
+        self.polybe = crypt.PolybCrypt()
         self.method = None
         self.mode = "decrypt"
         self.builder = builder = pygubu.Builder()
@@ -61,7 +57,7 @@ class CryptAsventiApp(object):
 
         elif self.method == "Polybe":
             print("ok")
-            #returntext.set(self.polybe.crypt(text, key, self.mode))
+            # returntext.set(self.polybe.crypt(text, key, self.mode))
 
 
 # Création de l'application
