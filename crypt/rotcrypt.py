@@ -25,7 +25,7 @@ def rot(text: str, offset: int):
     """
     rot_dic = __create_dictionnary(offset)
     crypttext = []
-    text = crpt.process_text(text)
+    text = utils.process_text(text)
 
     for letter in text:
         if letter in rot_dic:

@@ -53,8 +53,7 @@ class CryptAsventiApp(object):
             returntext.set(crypt.vigenere(text, key, self.mode))
 
         elif self.method == "Polybe":
-            # returntext.set(self.polybe.crypt(text, key, self.mode))
-            print("tet")
+            returntext.set(crypt.polybe(text, key, self.mode))
 
 
 # Création de l'application

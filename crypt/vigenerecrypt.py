@@ -12,7 +12,10 @@ def vigenere(text: str, key: str, mode: str):
     :return: le text crypté/décrypté
     """
 
-    __create_vigetab()
+    global vigetab
+
+    vigetab = __create_vigetab()
+    text = utils.process_text(text)
 
     if mode == "encrypt":
         return encrypt(text, key)
@@ -27,7 +30,6 @@ def encrypt(text: str, key: str):
     :return: string
     """
 
-    text = utils.process_text(text)
     key_adapted = __get_key_adapted(key, len(text), text)
     crypttext = []
 
@@ -56,6 +58,7 @@ def decrypt(text, key):
             key_index = vigetab[0].index(key)
             letter = vigetab[0][vigetab[key_index].index(letter)]
         crypttext.append(letter)
+
     return "".join(crypttext)
 
 
@@ -91,7 +94,6 @@ def __create_vigetab():
     :return: talbeau de cyptage en vigenere
     """
 
-    global vigetab
     vigetab = [utils.chrtab()]
 
     for i in range(1, 26):
