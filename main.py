@@ -6,14 +6,11 @@ import crypt
 
 class CryptAsventiApp(object):
     def __init__(self, master=None):
-        self.rot = crypt.RotCrypt()
-        self.vigenere = crypt.VigenereCrypt()
-        self.polybe = crypt.PolybCrypt()
         self.method = None
         self.mode = "decrypt"
         self.builder = builder = pygubu.Builder()
 
-        builder.add_from_file("./test.ui")
+        builder.add_from_file("./app.ui")
 
         self.mainwindow = builder.get_object("mainwindows", master)
 
@@ -47,17 +44,17 @@ class CryptAsventiApp(object):
         key = self.builder.get_object("keyentry").get()
 
         if self.method == "Caesar":
-            returntext.set(self.rot.crypt(text, 2))
+            returntext.set(crypt.rot(text, 2))
 
         elif self.method == "ROT13":
-            returntext.set(self.rot.crypt(text, 13))
+            returntext.set(crypt.rot(text, 13))
 
         elif self.method == "Vigenere":
-            returntext.set(self.vigenere.crypt(text, key, self.mode))
+            returntext.set(crypt.vigenere(text, key, self.mode))
 
         elif self.method == "Polybe":
-            print("ok")
             # returntext.set(self.polybe.crypt(text, key, self.mode))
+            print("tet")
 
 
 # Création de l'application

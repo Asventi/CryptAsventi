@@ -1,4 +1,4 @@
 # __init__
-from .polybecrypt import PolybCrypt
-from .rotcrypt import RotCrypt
-from .vigenerecrypt import VigenereCrypt
+from .polybecrypt import polybe
+from .rotcrypt import rot
+from .vigenerecrypt import vigenere
