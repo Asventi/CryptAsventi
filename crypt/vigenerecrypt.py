@@ -6,57 +6,65 @@ vigetab = []
 
 def vigenere(text: str, key: str, mode: str):
     """
-    :param text: texte à crypter/decrypter
-    :param key: clé de decryptage
-    :param mode: mode, decrypt ou crypt
-    :return: le text crypté/décrypté
+    Choisit la bonne mode de cryptage en fonction du mode, crypte en Vigenère
+
+    :param text: Le texte à crypter/décrypter
+    :param key: Clé de cryptage/décryptage
+    :param mode: Mode, "encrypt" ou "decrypt"
+    :return: Le text crypter/décrypter
     """
 
-    global vigetab
-
+    global vigetab  # On utilise la variable globale pour qu'elle soit accessible depuis toutes les fonctions
     vigetab = __create_vigetab()
+
     text = utils.process_text(text)
 
     if mode == "encrypt":
-        return encrypt(text, key)
+        return __encrypt(text, key)
     else:
-        return decrypt(text, key)
+        return __decrypt(text, key)
 
 
-def encrypt(text: str, key: str):
+def __encrypt(text: str, key: str):
     """
-    :param text: le texte a crypter
-    :param key: string
-    :return: string
+    Crypte le texte entré en Vigenère
+
+    :param text: Texte à crypter
+    :return: Texte crypté
     """
 
     key_adapted = __get_key_adapted(key, len(text), text)
     crypttext = []
 
-    for key, letter in zip(key_adapted, text):
-        if letter in vigetab[0]:
+    for key, letter in zip(key_adapted, text):  # On parcourt à la fois key_adapted et text grâce à zip
+        if letter in vigetab[0]:  # On vérifie bien que la lettre est bien cryptable, sinon on l'ajoute sans cryptage
+
+            # On prend les deux index sur la première ligne ça revient au même que de prendre dans la colonne
             key_index = vigetab[0].index(key)
             letter_index = vigetab[0].index(letter)
             letter = vigetab[key_index][letter_index]
+
         crypttext.append(letter)
 
     return "".join(crypttext)
 
 
-def decrypt(text, key):
+def __decrypt(text, key):
     """
-    :param text: string
-    :param key: string
-    :return: string
+    Décrypte le texte entré en Vigenère
+
+    :param text: Texte à décrypter
+    :return: Texte décrypté
     """
 
     key_adapted = __get_key_adapted(key, len(text), text)
     crypttext = []
 
-    for key, letter in zip(key_adapted, text):
-        if letter in vigetab[0]:
+    for key, letter in zip(key_adapted, text):  # On parcourt à la fois key_adapted et text grâce à zip
+        if letter in vigetab[0]:  # On vérifie bien que la lettre est bien cryptable, sinon on l'ajoute sans cryptage
             key_index = vigetab[0].index(key)
             letter = vigetab[0][vigetab[key_index].index(letter)]
+
         crypttext.append(letter)
 
     return "".join(crypttext)
@@ -64,12 +72,12 @@ def decrypt(text, key):
 
 def __get_key_adapted(key: str, length: int, text: str):
     """
-    Transforme la clé entrée en une clé adapté au cryptage du texte entré
+    Transforme la clé entrée en une clé adaptée au cryptage du texte entré
 
     :param key: la clé de cryptage/decryptage
-    :param length: taille du texte a crypter/decrypter
-    :param text: le texte a crypter/decrypter
-    :return: string
+    :param length: taille du texte à crypter/decrypter
+    :param text: le texte à crypter/decrypter
+    :return: la clé adaptée au texte
     """
 
     key = utils.process_text(key)
@@ -79,25 +87,30 @@ def __get_key_adapted(key: str, length: int, text: str):
     key_adapted = []
 
     for i in range(0, length):
-        if text[i] in vigetab[0]:
+        if text[i] in vigetab[0]:  # On vérifie bien que la lettre est bien pour éviter les problèmes avec les espaces
+
             key_adapted.append(key[key_index])
             key_index += 1
             if key_index > key_length - 1:
                 key_index = 0
+
         else:
             key_adapted.append(" ")
+
     return "".join(key_adapted)
 
 
 def __create_vigetab():
     """
+    Crée un tableau de Vigenère
+
     :return: talbeau de cyptage en vigenere
     """
 
-    vigetab = [utils.chrtab()]
+    tab = [utils.chrtab()]
 
     for i in range(1, 26):
-        line = utils.decale(vigetab[0], i)
-        vigetab.append(line)
+        line = utils.decale(tab[0], i)  # Utilisation de ma librairie pour decalé de 1 de plus à chaque fois
+        tab.append(line)
 
-    return vigetab
+    return tab

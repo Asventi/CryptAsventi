@@ -7,54 +7,69 @@ numtab = [str(x) for x in range(1,10)]
 
 
 def polybe(text: str, key: str, mode: str):
+    """
+    Choisit la bon mode de cryptage en fonction du mode, crypte en Polybe
+
+    :param text: Le texte à crypter/décrypter
+    :param key: Clé de cryptage/décryptage
+    :param mode: Mode, "encrypt" ou "decrypt"
+    :return: Le text crypter/décrypter
+    """
+
     key = key.upper()
-    global poltab
+    global poltab  # On utilise la variable globale pour qu'elle soit accessible depuis toutes les fonctions
     poltab = __create_poltab(key)
 
     text = utils.process_text(text)
     text = text.upper()
 
     if mode == "encrypt":
-        return encrypt(text)
+        return __encrypt(text)
     else:
-        return decrypt(text)
+        return __decrypt(text)
 
 
-def encrypt(text: str):
+def __encrypt(text: str):
+    """
+    Crypte le texte entré en Polybe
+
+    :param text: Texte à crypter
+    :return: Texte crypté
+    """
 
     text = text.upper()
     crypttext = []
 
     for letter in text:
-        if letter in chrtab:
+        if letter in chrtab:  # On vérifie bien que la lettre est bien cryptable, sinon on l'ajoute sans cryptage
             x, y = __index_letter(letter)
-            num = str(x + 1) + str(y + 1)
-            crypttext.append(num)
+            letter = str(x + 1) + str(y + 1)  # On ajoute 1, car x et y sont les coordoonées en commencant par 0
 
-        else:
-            crypttext.append(letter)
+        crypttext.append(letter)
 
     return "".join(crypttext)
 
 
-def decrypt(text: str):
+def __decrypt(text: str):
     """
-    Décrypte de le etxte entré
+    Décrypte le texte entré en Polybe
 
     :param text: Texte à décrypter
-    :return: Le texte décrypté
+    :return: Texte décrypté
     """
 
     crypttext = []
     pair = ""
 
     for num in text:
-        if num in numtab:
+        if num in numtab:  # On vérifie que le chiffre est bien un chiffre pour éviter les erreurs
             pair += num
-            if len(pair) == 2:
-                decrypt_letter = poltab[int(pair[0])-1][int(pair[1])-1]
+
+            if len(pair) == 2:  # Si la paire est complète on l'ajoute à la phrase décryptée
+                decrypt_letter = poltab[int(pair[0])-1][int(pair[1])-1]  # Les index d'une list commencent par 0 donc -1
                 crypttext.append(decrypt_letter)
                 pair = ""
+
         else:
             crypttext.append(num)
 
@@ -69,8 +84,9 @@ def __index_letter(letter: str):
     :return: Les coordonnées de la lettre cherchée
     """
 
-    for i, line in enumerate(poltab):
+    for i, line in enumerate(poltab):  # On récupère la ligne et son index grâce à enumerate
         if letter in line:
+
             return i, line.index(letter)
 
 
@@ -85,8 +101,10 @@ def __create_poltab(key: str):
 
     for i in range(5):
         poltab.append([])
+
         for j in range(5):
-            letter = key[j + (i * 5)]
+            letter = key[j + (i * 5)]  # Ici on fait i*5 pour prendre les lettres une ligne plus loin à chaque fois
             poltab[i].append(letter)
+
     return poltab
 

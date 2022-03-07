@@ -1,8 +1,10 @@
-# main.py
+# main.pyw
 import pygubu
 
 import crypt
 
+
+# Script crée en partie grâce à un tutoriel sur pygubu trouvé sur youtube
 
 class CryptAsventiApp(object):
     def __init__(self, master=None):
@@ -21,15 +23,13 @@ class CryptAsventiApp(object):
 
     def setmethod(self, method):
         """
-        Recoit un callback lorsqu'un mode est selectionné
-        :param method: string
+        Recoit un callback lorsqu'une méthode est selectionnée
         """
         self.method = method
 
     def setmode(self, mode):
         """
         Recoit un callback lorsqu'un mode est selctionné
-        :param mode: string
         """
         self.mode = mode
 
